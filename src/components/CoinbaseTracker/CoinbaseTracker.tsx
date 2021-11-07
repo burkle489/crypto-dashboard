@@ -1,4 +1,3 @@
-import { template } from '@babel/core';
 import { Form, Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
 import { useFetch } from '../../hooks/useFetch';
@@ -23,8 +22,15 @@ const newCostPerCoin = (prev: IPortfolioItem, addition: IAddPortfolioItem) => {
     return ((prev.costPerCoin * prev.totalCoins) + (addition.costPerCoin * addition.totalCoins)) / newTotalCoins;
 }
 
+const profitLoss = (actualPrice: number, portfolioPrice: number, noOfCoins: number) => {
+    return (actualPrice * noOfCoins) - (portfolioPrice * noOfCoins);
+}
+const percentageProfitLoss = (actualPrice: number, portfolioPrice: number, noOfCoins: number) => {
+    return ((actualPrice * noOfCoins) / (portfolioPrice * noOfCoins)) * 100;
+}
+
 export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
-    const [availablePairs, setAvailablePairs] = useState<{ label: string, value: string }[] | null>(null);
+    // const [availablePairs, setAvailablePairs] = useState<{ label: string, value: string }[] | null>(null);
     const [portfolioPairs, setPortfolioPairs] = useState<string[]>([]);
     const [portfolio, setPortfolio] = useState<IPortfolioItem[] | null>(null);
     const [initialValues, setInitialValues] = useState<ChangeMe>(INITIAL_VALUES);
@@ -39,6 +45,7 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
     }, [])
 
     useEffect(() => {
+        //when portfolioPairs updates subscribe relevant tickers
         if (!first.current) {
             return;
         }
@@ -59,15 +66,17 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
                 if (portfolio) {
                     const updatePortfolio = portfolio.map(item => {
                         if (item.assetPair === data.product_id) {
-                            return { ...item, currentPrice: data.price, profitLoss: (data.price * item.totalCoins) - (item.costPerCoin * item.totalCoins), percentageProfitLoss: ((data.price * item.totalCoins) / (item.costPerCoin * item.totalCoins)) * 100 };
+                            return {
+                                ...item,
+                                currentPrice: data.price,
+                                profitLoss: profitLoss(data.price, item.costPerCoin, item.totalCoins),
+                                percentageProfitLoss: percentageProfitLoss(data.price, item.costPerCoin, item.totalCoins),
+                            };
                         }
                         return item;
                     })
-                    setPortfolio(updatePortfolio)
+                    setPortfolio(updatePortfolio);
                 }
-                // if (data.product_id === pair) {
-                //   setprice(data.price);
-                // }
             };
         }
     }, [portfolioPairs])
@@ -78,10 +87,11 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
             //check if already owns some of this
             const alreadyExists = portfolio.find(item => item.assetPair === e.assetPair);
             if (alreadyExists) {
+                //crypto pair already exists in portfolio so update existing portfolio
                 const updatePortfolio: any[] = portfolio.map(item => {
                     console.log(item.assetPair, e.assetPair)
                     if (item.assetPair === e.assetPair) {
-                        return { ...item, costPerCoin: newCostPerCoin(item, e), totalCoins: item.totalCoins + e.totalCoins, currentPrice: 0, profitLoss: 0, percentageProfitLoss: 0 }
+                        return { ...item, costPerCoin: newCostPerCoin(item, e), totalCoins: item.totalCoins + e.totalCoins }
                     }
                     return item;
                 })
@@ -97,10 +107,6 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
             setPortfolioPairs([...portfolioPairs, e.assetPair])
         }
     }
-
-    useEffect(() => {
-        console.log({ portfolio })
-    }, [portfolio])
 
     if (tradingPairs.response) {
         return (

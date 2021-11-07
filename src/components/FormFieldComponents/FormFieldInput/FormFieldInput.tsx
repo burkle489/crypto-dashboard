@@ -1,6 +1,6 @@
-import React from 'react'
-import { ChangeMe } from '../../CoinbaseTracker/models'
-import { useField, Form, FormikProps, Formik } from 'formik';
+import { useField } from 'formik';
+import React from 'react';
+import { ChangeMe } from '../../CoinbaseTracker/models';
 
 export const FormFieldInput: React.FC<ChangeMe> = ({ label, ...props }) => {
     const [field, meta, helpers] = useField(props);
