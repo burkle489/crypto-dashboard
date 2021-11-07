@@ -58,7 +58,7 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
             let jsonMsg = JSON.stringify(msg);
             ws.current.send(jsonMsg);
 
-            ws.current.onmessage = (e: any) => {
+            ws.current.onmessage = (e: ChangeMe) => {
                 let data = JSON.parse(e.data);
                 if (data.type !== "ticker") {
                     return;
@@ -79,7 +79,7 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
                 }
             };
         }
-    }, [portfolioPairs])
+    }, [portfolioPairs]);
 
     const handleAddToPortfolio = (e: IAddPortfolioItem) => {
         //check if portfolio isnt empty
@@ -88,7 +88,7 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
             const alreadyExists = portfolio.find(item => item.assetPair === e.assetPair);
             if (alreadyExists) {
                 //crypto pair already exists in portfolio so update existing portfolio
-                const updatePortfolio: any[] = portfolio.map(item => {
+                const updatePortfolio: ChangeMe[] = portfolio.map(item => {
                     console.log(item.assetPair, e.assetPair)
                     if (item.assetPair === e.assetPair) {
                         return { ...item, costPerCoin: newCostPerCoin(item, e), totalCoins: item.totalCoins + e.totalCoins }
