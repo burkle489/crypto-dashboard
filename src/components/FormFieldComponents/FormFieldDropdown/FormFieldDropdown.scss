@@ -1,0 +1,27 @@
+.DropdownSelect__control {
+    font-size: 1.2rem;
+    text-align: start;
+    height: 30px;
+    min-height: 30px !important;
+    .DropdownSelect__value-container {
+        .DropdownSelect__placeholder {
+        }
+    }
+    .DropdownSelect__indicators {
+        height: 30px;
+        .DropdownSelect__indicator {
+            padding: 5px 8px;
+        }
+    }
+}
+
+.DropdownSelect__menu {
+    .DropdownSelect__menu-list {
+        .DropdownSelect__option {
+            font-size: 1.2rem;
+        }
+        .DropdownSelect__option--is-focused {
+            background: $color-5b;
+        }
+    }
+}

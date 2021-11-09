@@ -2,6 +2,7 @@ import { API } from 'aws-amplify';
 import { Form, Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
 import { getPortfolioAsset, listPortfolioAssets } from '../../graphql/queries';
+import { isPositiveNumber } from '../../helpers/isPositiveNumber';
 import { useFetch } from '../../hooks/useFetch';
 import { AddToPortfolio } from '../AddToPortfolio/AddToPortfolio';
 import { FormFieldDropdown } from '../FormFieldComponents/FormFieldDropdown/FormFieldDropdown';
@@ -30,7 +31,7 @@ const profitLoss = (actualPrice: number, portfolioPrice: number, noOfCoins: numb
     return (actualPrice * noOfCoins) - (portfolioPrice * noOfCoins);
 }
 const percentageProfitLoss = (actualPrice: number, portfolioPrice: number, noOfCoins: number) => {
-    return ((actualPrice * noOfCoins) / (portfolioPrice * noOfCoins)) * 100;
+    return (((actualPrice * noOfCoins) - (portfolioPrice * noOfCoins)) / (portfolioPrice * noOfCoins)) * 100;
 }
 
 export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
@@ -95,6 +96,10 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
 
     const handleAddToPortfolio = (e: IAddPortfolioItem) => {
         //check if portfolio isnt empty
+        (async () => {
+            console.log('add portfolio asset')
+            addPortfolioAsset(e)
+        })()
         if (portfolio && portfolio.length > 0) {
             //check if already owns some of this
             const alreadyExists = portfolio.find(item => item.assetPair === e.assetPair);
@@ -115,10 +120,6 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
             }
         } else {
             //add first crypto to portfolio
-            (async () => {
-                console.log('add portfolio asset')
-                addPortfolioAsset(e)
-            })()
             console.log('in here')
             setPortfolio([{ ...e, currentPrice: 0, profitLoss: 0, percentageProfitLoss: 0 }])
             setPortfolioPairs([...portfolioPairs, e.assetPair])
@@ -147,11 +148,11 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
                             portfolio.map(item => (
                                 <tr className='PortfolioRow'>
                                     <td className='PortfolioCell'>{item.assetPair}</td>
-                                    <td className='PortfolioCell'>{item.costPerCoin}</td>
+                                    <td className='PortfolioCell'>${item.costPerCoin}</td>
                                     <td className='PortfolioCell'>{item.totalCoins}</td>
-                                    <td className='PortfolioCell'>{item.currentPrice}</td>
-                                    <td className='PortfolioCell'>{item?.profitLoss?.toFixed(2)}</td>
-                                    <td className='PortfolioCell'>{item?.percentageProfitLoss?.toFixed(2)}</td>
+                                    <td className='PortfolioCell'>${item.currentPrice}</td>
+                                    <td className={`PortfolioCell${isPositiveNumber(item.profitLoss) ? ' Positive' : ' Negative'}`}>${item?.profitLoss?.toFixed(2)}</td>
+                                    <td className={`PortfolioCell${isPositiveNumber(item.profitLoss) ? ' Positive' : ' Negative'}`}>{item?.percentageProfitLoss?.toFixed(2)}%</td>
                                 </tr>
                             ))
                             : <div>Your portfolio is empty</div>

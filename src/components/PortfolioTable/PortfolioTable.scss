@@ -7,6 +7,12 @@
             }
 
             .PortfolioCell {
+                &.Positive {
+                    color: green;
+                }
+                &.Negative {
+                    color: red;
+                }
             }
         }
     }

@@ -10,6 +10,18 @@ $color-three: #f58a07; // dark orange
 $color-four: #f9ab55; // lighter orange
 $color-five: #f7f5fb; //background white
 
+$color-1b: #0d0221; //background blue
+$color-2b: #0f084b; //main CTAs etc blue
+$color-3b: #26408b; // dark orange
+$color-4b: #a6cfd5; // lighter orange
+$color-5b: #c2e7d9; //background white
+$color-6b: #f0f9f6; //background white
+
+* {
+    box-sizing: border-box;
+    color: $color-1b;
+}
+
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
@@ -28,6 +40,7 @@ html,
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
     font-size: 62.5%;
+    background: $color-6b;
 }
 
 p {
@@ -61,7 +74,7 @@ form {
 
 .Btn {
     width: 100%;
-    background-color: $color-three;
+    background-color: $color-3b;
     color: $basic-color-one;
     font-weight: 700;
     font-size: 1.4rem;

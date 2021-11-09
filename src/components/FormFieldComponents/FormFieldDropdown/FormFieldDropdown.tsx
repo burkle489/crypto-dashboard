@@ -16,6 +16,8 @@ export const FormFieldDropdown: React.FC<ChangeMe> = ({ label, ...props }) => {
     }
 
     return (
-        <Select name={field.name} options={options} onChange={(selectedOption: ChangeMe) => setFieldProps(selectedOption as ChangeMe)} />
+        <div className='FormField'>
+            <Select defaultMenuIsOpen classNamePrefix='DropdownSelect' name={field.name} options={options} onChange={(selectedOption: ChangeMe) => setFieldProps(selectedOption as ChangeMe)} />
+        </div>
     );
 };
