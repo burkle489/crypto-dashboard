@@ -1,0 +1,14 @@
+.FormField {
+    width: 100%;
+    margin-bottom: 2rem;
+    .FormFieldInput {
+        width: 100%;
+        .FormFieldLabel {
+            font-size: 1.1rem;
+            text-align: left;
+        }
+        input {
+            width: 100%;
+        }
+    }
+}

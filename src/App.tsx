@@ -6,8 +6,9 @@ import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 function App() {
   return (
     <div className="App">
-      <CoinbaseTracker />
       <AmplifySignOut />
+      <h1>Financiall</h1>
+      <CoinbaseTracker />
     </div>
   );
 }

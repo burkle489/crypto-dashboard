@@ -3,6 +3,7 @@ import { Form, Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
 import { getPortfolioAsset, listPortfolioAssets } from '../../graphql/queries';
 import { useFetch } from '../../hooks/useFetch';
+import { AddToPortfolio } from '../AddToPortfolio/AddToPortfolio';
 import { FormFieldDropdown } from '../FormFieldComponents/FormFieldDropdown/FormFieldDropdown';
 import { FormFieldInput } from '../FormFieldComponents/FormFieldInput/FormFieldInput';
 import { addPortfolioAsset, getPortfolio } from './CoinbaseTrackerApi';
@@ -126,36 +127,31 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
 
     if (tradingPairs.response) {
         return (
-            <div className='Coinbase'>
-                <div className='AddToPortfolio'>
-                    <Formik onSubmit={handleAddToPortfolio} initialValues={initialValues}>
-                        <Form>
-                            <FormFieldDropdown options={tradingPairs.response.map((pair: TradingPair) => ({ value: pair.id, label: pair.id }))} name='assetPair' label='Asset pair' />
-                            <FormFieldInput type='number' name='costPerCoin' label='Amount paid per coin' />
-                            <FormFieldInput type='number' name='totalCoins' label='Total no. of coins' />
-                            <button type='submit'>Add Purchase</button>
-                        </Form>
-                    </Formik>
-                </div>
+            <div className='CoinbaseTracker'>
+                <AddToPortfolio
+                    handleSubmit={handleAddToPortfolio}
+                    initialValues={initialValues}
+                    options={tradingPairs.response.map((pair: TradingPair) => ({ value: pair.id, label: pair.id }))}
+                />
                 <div className='Portfolio'>
-                    <table>
-                        <tr>
-                            <th>assetPair</th>
-                            <th>costPerCoin</th>
-                            <th>totalCoins</th>
-                            <th>currentPrice</th>
-                            <th>profitLoss</th>
-                            <th>percentageProfitLoss</th>
+                    <table className='PortfolioTable'>
+                        <tr className='PortfolioRow'>
+                            <th className='PortfolioHeader'>Asset</th>
+                            <th className='PortfolioHeader'>Cost per coin</th>
+                            <th className='PortfolioHeader'>Total</th>
+                            <th className='PortfolioHeader'>Current price</th>
+                            <th className='PortfolioHeader'>P/L</th>
+                            <th className='PortfolioHeader'>% P/L</th>
                         </tr>
                         {portfolio ?
                             portfolio.map(item => (
                                 <tr className='PortfolioRow'>
-                                    <td>{item.assetPair}</td>
-                                    <td>{item.costPerCoin}</td>
-                                    <td>{item.totalCoins}</td>
-                                    <td>{item.currentPrice}</td>
-                                    <td>{item.profitLoss}</td>
-                                    <td>{item.percentageProfitLoss}</td>
+                                    <td className='PortfolioCell'>{item.assetPair}</td>
+                                    <td className='PortfolioCell'>{item.costPerCoin}</td>
+                                    <td className='PortfolioCell'>{item.totalCoins}</td>
+                                    <td className='PortfolioCell'>{item.currentPrice}</td>
+                                    <td className='PortfolioCell'>{item?.profitLoss?.toFixed(2)}</td>
+                                    <td className='PortfolioCell'>{item?.percentageProfitLoss?.toFixed(2)}</td>
                                 </tr>
                             ))
                             : <div>Your portfolio is empty</div>
