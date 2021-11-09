@@ -1,5 +1,5 @@
 type PortfolioAsset @model {
     assetPair: String
-    costPerCoin: Double
-    totalCoins: Double
+    costPerCoin: Float
+    totalCoins: Float
 }

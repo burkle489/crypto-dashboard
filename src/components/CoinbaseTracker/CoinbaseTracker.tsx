@@ -51,6 +51,7 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
         (async () => {
             const getP = await getPortfolio();
             setPortfolio(getP);
+            setPortfolioPairs(getP.map((item: ChangeMe) => item.assetPair))
         })()
     }, []);
 
@@ -66,7 +67,7 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
                 channels: ["ticker"]
             };
             let jsonMsg = JSON.stringify(msg);
-            ws.current.send(jsonMsg);
+            ws.current.onopen = () => ws.current.send(jsonMsg);
 
             ws.current.onmessage = (e: ChangeMe) => {
                 let data = JSON.parse(e.data);

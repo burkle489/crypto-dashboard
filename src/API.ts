@@ -11,8 +11,8 @@ export type CreatePortfolioAssetInput = {
 
 export type ModelPortfolioAssetConditionInput = {
   assetPair?: ModelStringInput | null,
-  costPerCoin?: ModelIntInput | null,
-  totalCoins?: ModelIntInput | null,
+  costPerCoin?: ModelFloatInput | null,
+  totalCoins?: ModelFloatInput | null,
   and?: Array< ModelPortfolioAssetConditionInput | null > | null,
   or?: Array< ModelPortfolioAssetConditionInput | null > | null,
   not?: ModelPortfolioAssetConditionInput | null,
@@ -58,7 +58,7 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type ModelIntInput = {
+export type ModelFloatInput = {
   ne?: number | null,
   eq?: number | null,
   le?: number | null,
@@ -92,8 +92,8 @@ export type DeletePortfolioAssetInput = {
 
 export type ModelPortfolioAssetFilterInput = {
   assetPair?: ModelStringInput | null,
-  costPerCoin?: ModelIntInput | null,
-  totalCoins?: ModelIntInput | null,
+  costPerCoin?: ModelFloatInput | null,
+  totalCoins?: ModelFloatInput | null,
   and?: Array< ModelPortfolioAssetFilterInput | null > | null,
   or?: Array< ModelPortfolioAssetFilterInput | null > | null,
   not?: ModelPortfolioAssetFilterInput | null,
