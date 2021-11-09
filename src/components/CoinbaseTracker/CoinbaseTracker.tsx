@@ -1,8 +1,11 @@
+import { API } from 'aws-amplify';
 import { Form, Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
+import { getPortfolioAsset, listPortfolioAssets } from '../../graphql/queries';
 import { useFetch } from '../../hooks/useFetch';
 import { FormFieldDropdown } from '../FormFieldComponents/FormFieldDropdown/FormFieldDropdown';
 import { FormFieldInput } from '../FormFieldComponents/FormFieldInput/FormFieldInput';
+import { addPortfolioAsset, getPortfolio } from './CoinbaseTrackerApi';
 import { ChangeMe, CoinbaseTrackerProps, IAddPortfolioItem, IPortfolioItem, TradingPair } from './models';
 
 const URL = 'https://api.pro.coinbase.com';
@@ -34,7 +37,6 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
     const [portfolioPairs, setPortfolioPairs] = useState<string[]>([]);
     const [portfolio, setPortfolio] = useState<IPortfolioItem[] | null>(null);
     const [initialValues, setInitialValues] = useState<ChangeMe>(INITIAL_VALUES);
-
     const ws: ChangeMe = useRef(null);
     let first = useRef(false);
     const tradingPairs = useFetch<TradingPair[]>(URL + '/products');
@@ -43,6 +45,14 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
         ws.current = new WebSocket("wss://ws-feed.pro.coinbase.com");
         first.current = true;
     }, [])
+
+    useEffect(() => {
+        //fetch portfolio on mount
+        (async () => {
+            const getP = await getPortfolio();
+            setPortfolio(getP);
+        })()
+    }, []);
 
     useEffect(() => {
         //when portfolioPairs updates subscribe relevant tickers
@@ -83,7 +93,7 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
 
     const handleAddToPortfolio = (e: IAddPortfolioItem) => {
         //check if portfolio isnt empty
-        if (portfolio) {
+        if (portfolio && portfolio.length > 0) {
             //check if already owns some of this
             const alreadyExists = portfolio.find(item => item.assetPair === e.assetPair);
             if (alreadyExists) {
@@ -103,6 +113,11 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
             }
         } else {
             //add first crypto to portfolio
+            (async () => {
+                console.log('add portfolio asset')
+                addPortfolioAsset(e)
+            })()
+            console.log('in here')
             setPortfolio([{ ...e, currentPrice: 0, profitLoss: 0, percentageProfitLoss: 0 }])
             setPortfolioPairs([...portfolioPairs, e.assetPair])
         }
