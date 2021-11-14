@@ -9,12 +9,10 @@ export const getPortfolio = async () => {
 }
 
 export const addPortfolioAsset = async (formData: IAddPortfolioItem) => {
-    console.log({ formData })
     const result = await API.graphql({
         query: createPortfolioAssetMutation,
         variables: { input: formData },
     })
-    console.log({ result })
 }
 
 // async function createNote() {

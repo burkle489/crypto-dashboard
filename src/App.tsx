@@ -2,12 +2,12 @@ import React from 'react';
 import './App.css';
 import { CoinbaseTracker } from './components/CoinbaseTracker/CoinbaseTracker';
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
+import { Navbar } from './components/Navbar/Navbar';
 
 function App() {
   return (
     <div className="App">
-      <AmplifySignOut />
-      <h1>Financiall</h1>
+      <Navbar />
       <CoinbaseTracker />
     </div>
   );

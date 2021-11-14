@@ -40,7 +40,7 @@ html,
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
     font-size: 62.5%;
-    background: $color-6b;
+    background: $color-3b;
 }
 
 p {
@@ -69,7 +69,9 @@ form {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 40px;
+    padding: 4rem;
+    padding-top: 8rem;
+    font-size: 1.2rem;
 }
 
 .Btn {
@@ -80,8 +82,28 @@ form {
     font-size: 1.4rem;
     border: none;
     height: 3rem;
-    border-radius: 0.3rem;
     cursor: pointer;
+}
+amplify-button {
+}
+:root {
+    --amplify-primary-color: #26408b;
+    --amplify-primary-tint: #3f6060;
+    --amplify-primary-shade: #26408b;
+    --amplify-background-color: #f0f9f6;
+    --amplify-font-size: 1.6rem;
+    --amplify-border-radius: 3px;
+}
+amplify-authenticator {
+    font-size: 100%;
+}
+@media (min-width: 672px) {
+    .sign-in-form-footer {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        justify-content: space-around;
+    }
 }
 
 //Components
@@ -90,3 +112,4 @@ form {
 @import '../src/components/CoinbaseTracker/CoinbaseTracker.scss';
 @import '../src/components/AddToPortfolio/AddToPortfolio.scss';
 @import '../src/components/PortfolioTable/PortfolioTable.scss';
+@import '../src/components/Navbar/Navbar.scss';

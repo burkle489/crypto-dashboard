@@ -44,16 +44,17 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
     const tradingPairs = useFetch<TradingPair[]>(URL + '/products');
 
     useEffect(() => {
+        //connect websocket
         ws.current = new WebSocket("wss://ws-feed.pro.coinbase.com");
         first.current = true;
-    }, [])
+    }, []);
 
     useEffect(() => {
-        //fetch portfolio on mount
+        //fetch portfolio on mount and update state accordingly
         (async () => {
             const getP = await getPortfolio();
             setPortfolio(getP);
-            setPortfolioPairs(getP.map((item: ChangeMe) => item.assetPair))
+            setPortfolioPairs(getP.map((item: ChangeMe) => item.assetPair));
         })()
     }, []);
 
@@ -70,7 +71,6 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
             };
             let jsonMsg = JSON.stringify(msg);
             ws.current.onopen = () => ws.current.send(jsonMsg);
-
             ws.current.onmessage = (e: ChangeMe) => {
                 let data = JSON.parse(e.data);
                 if (data.type !== "ticker") {
@@ -95,11 +95,10 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
     }, [portfolioPairs]);
 
     const handleAddToPortfolio = (e: IAddPortfolioItem) => {
-        //check if portfolio isnt empty
         (async () => {
-            console.log('add portfolio asset')
             addPortfolioAsset(e)
         })()
+        //check if portfolio isnt empty
         if (portfolio && portfolio.length > 0) {
             //check if already owns some of this
             const alreadyExists = portfolio.find(item => item.assetPair === e.assetPair);
@@ -120,7 +119,6 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
             }
         } else {
             //add first crypto to portfolio
-            console.log('in here')
             setPortfolio([{ ...e, currentPrice: 0, profitLoss: 0, percentageProfitLoss: 0 }])
             setPortfolioPairs([...portfolioPairs, e.assetPair])
         }
