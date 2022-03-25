@@ -17,6 +17,7 @@ TODO
 - Adding new ticket doesnt subscribe to websocket realtime - requires a refresh
 - on load the table looks buggy and flickery until all data is loaded
 - cannot currently delete anything from table
+- simplify styling across site
 
 */
 
