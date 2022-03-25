@@ -10,6 +10,16 @@ import { FormFieldInput } from '../FormFieldComponents/FormFieldInput/FormFieldI
 import { addPortfolioAsset, getPortfolio } from './CoinbaseTrackerApi';
 import { ChangeMe, CoinbaseTrackerProps, IAddPortfolioItem, IPortfolioItem, TradingPair } from './models';
 
+
+/*
+TODO
+
+- Adding new ticket doesnt subscribe to websocket realtime - requires a refresh
+- on load the table looks buggy and flickery until all data is loaded
+- cannot currently delete anything from table
+
+*/
+
 const URL = 'https://api.pro.coinbase.com';
 
 const INITIAL_VALUES: IAddPortfolioItem = {
