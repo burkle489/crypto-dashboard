@@ -88,11 +88,12 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
                         }
                         return item;
                     })
-                    setPortfolio(updatePortfolio);
+
+                    setPortfolio((prev) => ([...updatePortfolio]));
                 }
             };
         }
-    }, [portfolioPairs]);
+    }, [portfolioPairs, portfolio]);
 
     const handleAddToPortfolio = (e: IAddPortfolioItem) => {
         (async () => {
@@ -134,27 +135,33 @@ export const CoinbaseTracker: React.FC<CoinbaseTrackerProps> = () => {
                 />
                 <div className='Portfolio'>
                     <table className='PortfolioTable'>
-                        <tr className='PortfolioRow'>
-                            <th className='PortfolioHeader'>Asset</th>
-                            <th className='PortfolioHeader'>Cost per coin</th>
-                            <th className='PortfolioHeader'>Total</th>
-                            <th className='PortfolioHeader'>Current price</th>
-                            <th className='PortfolioHeader'>P/L</th>
-                            <th className='PortfolioHeader'>% P/L</th>
-                        </tr>
-                        {portfolio ?
-                            portfolio.map(item => (
-                                <tr className='PortfolioRow'>
-                                    <td className='PortfolioCell'>{item.assetPair}</td>
-                                    <td className='PortfolioCell'>${item.costPerCoin}</td>
-                                    <td className='PortfolioCell'>{item.totalCoins}</td>
-                                    <td className='PortfolioCell'>${item.currentPrice}</td>
-                                    <td className={`PortfolioCell${isPositiveNumber(item.profitLoss) ? ' Positive' : ' Negative'}`}>${item?.profitLoss?.toFixed(2)}</td>
-                                    <td className={`PortfolioCell${isPositiveNumber(item.profitLoss) ? ' Positive' : ' Negative'}`}>{item?.percentageProfitLoss?.toFixed(2)}%</td>
-                                </tr>
-                            ))
-                            : <div>Your portfolio is empty</div>
-                        }
+                        <thead>
+
+                            <tr className='PortfolioRow'>
+                                <th className='PortfolioHeader'>Asset</th>
+                                <th className='PortfolioHeader'>Cost per coin</th>
+                                <th className='PortfolioHeader'>Total</th>
+                                <th className='PortfolioHeader'>Current price</th>
+                                <th className='PortfolioHeader'>P/L</th>
+                                <th className='PortfolioHeader'>% P/L</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            {portfolio ?
+                                portfolio.map((item, index) => (
+                                    <tr className='PortfolioRow' key={`${item.assetPair} + ${index}`}>
+                                        <td className='PortfolioCell'>{item.assetPair}</td>
+                                        <td className='PortfolioCell'>${item.costPerCoin}</td>
+                                        <td className='PortfolioCell'>{item.totalCoins}</td>
+                                        <td className='PortfolioCell'>${item.currentPrice}</td>
+                                        <td className={`PortfolioCell${isPositiveNumber(item.profitLoss) ? ' Positive' : ' Negative'}`}>${item?.profitLoss?.toFixed(2)}</td>
+                                        <td className={`PortfolioCell${isPositiveNumber(item.profitLoss) ? ' Positive' : ' Negative'}`}>{item?.percentageProfitLoss?.toFixed(2)}%</td>
+                                    </tr>
+                                ))
+                                : <div>Your portfolio is empty</div>
+                            }
+                        </tbody>
                     </table>
                 </div>
             </div>
