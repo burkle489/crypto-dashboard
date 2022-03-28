@@ -1,12 +1,7 @@
-import { API } from 'aws-amplify';
-import { Form, Formik } from 'formik';
 import React, { useEffect, useRef, useState } from 'react';
-import { getPortfolioAsset, listPortfolioAssets } from '../../graphql/queries';
 import { isPositiveNumber } from '../../helpers/isPositiveNumber';
 import { useFetch } from '../../hooks/useFetch';
 import { AddToPortfolio } from '../AddToPortfolio/AddToPortfolio';
-import { FormFieldDropdown } from '../FormFieldComponents/FormFieldDropdown/FormFieldDropdown';
-import { FormFieldInput } from '../FormFieldComponents/FormFieldInput/FormFieldInput';
 import { addPortfolioAsset, getPortfolio } from './CoinbaseTrackerApi';
 import { ChangeMe, CoinbaseTrackerProps, IAddPortfolioItem, IPortfolioItem, TradingPair } from './models';
 
@@ -17,7 +12,7 @@ TODO
 - Adding new ticket doesnt subscribe to websocket realtime - requires a refresh
 - on load the table looks buggy and flickery until all data is loaded
 - cannot currently delete anything from table
-- simplify styling across site
+- style rework - looks rubbish atm
 
 */
 
